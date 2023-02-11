@@ -1,0 +1,1 @@
+This will be a functional calculator. The design for the calculator will be styled using flexbox, and the functionality through JavaScript.
