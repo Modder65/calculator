@@ -29,7 +29,7 @@ h1 {
 
 .calcContainer {
     width: 420px;
-    height: 515px;
+    height: 535px;
     border: 10px solid rgba(47,47,47,1);
     border-radius: 5px;
     display: flex;
@@ -41,11 +41,18 @@ h1 {
     
 }
 
+.outputContainer {
+    display: flex;
+    width: 410px;
+    height: 110px;
+
+}
+
 .outputBar {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    width: 410px;
+    width: 205px;
     height: 100px;
     background-color: #b2b9b7;
     margin-top: 5px;
@@ -56,6 +63,23 @@ h1 {
     margin: 0;
     margin-right: 10px;
     font-size: 70px;
+}
+
+.previousBar {
+    display: flex;
+    justify-content: flex-start;
+    width: 205px;
+    height: 100px;
+    background-color: #b2b9b7;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+#previousText {
+    margin: 0;
+    margin-left: 10px;
+    margin-top: 10px;
+    font-size: 32px;
 }
 
 .btnContainer {

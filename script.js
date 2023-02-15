@@ -13,117 +13,157 @@ const btn7 = document.getElementById('btn7');
 const btn8 = document.getElementById('btn8');
 const btn9 = document.getElementById('btn9');
 const btnPlus = document.getElementById('btnPlus');
+const btnMinus = document.getElementById('btnMinus');
+const btnMult = document.getElementById('btnMult');
+const btnDivide = document.getElementById('btnDivide');
+const btnEquals = document.getElementById('btnEquals');
 const outputBar = document.querySelector('.outputBar');
 const outputText = document.getElementById('outputText');
+const previousBar = document.querySelector('.previousBar');
+const previousText = document.getElementById('previousText');5
+let firstValue = "";
+let secondValue = "";
+
+//be able to evaluate expressions with more than 2 operands
+
+function compute() {
+    let finalValue;
+    if (previousText.textContent.includes("+")) {
+        finalValue = parseInt(firstValue) + parseInt(secondValue);
+        return finalValue;
+    } else if (previousText.textContent.includes("-")) {
+        finalValue = parseInt(firstValue) - parseInt(secondValue);
+        return finalValue;
+    } else if (previousText.textContent.includes("*")) {
+        finalValue = parseInt(firstValue) * parseInt(secondValue);
+        return finalValue;
+    } else if (previousText.textContent.includes("/")) {
+        finalValue = parseInt(firstValue) / parseInt(secondValue);
+        return finalValue;
+    }
+}
+
+function buttonClick(num) {
+    if (outputText.textContent == "0") {
+        outputText.textContent = num;
+        if (firstValue !== "") {
+            firstValue = firstValue
+        } else if (firstValue == "") {
+            firstValue = num;
+        }
+    } else if (outputText !== "") {
+        outputText.textContent += num;
+        if (secondValue !== "") {
+            firstValue = firstValue
+        } else if (secondValue == "") {
+            firstValue += num;
+        }
+    } else {
+        outputText.textContent = num;
+    }
+    if (previousText.textContent !== "") {
+        previousText.textContent += " " + num;
+    }
+    if (previousText.textContent.includes("+")) {
+        firstValue = firstValue;
+        if (secondValue !== "") {
+            secondValue += num;
+        } else if (secondValue == "")
+            secondValue = num;
+    } else if (previousText.textContent.includes("-")) {
+        firstValue = firstValue;
+        if (secondValue !== "") {
+            secondValue += num;
+        } else if (secondValue == "")
+            secondValue = num;
+    } else if (previousText.textContent.includes("*")) {
+        firstValue = firstValue;
+        if (secondValue !== "") {
+            secondValue += num;
+        } else if (secondValue == "")
+            secondValue = num;
+    } else if (previousText.textContent.includes("/")) {
+        firstValue = firstValue;
+        if (secondValue !== "") {
+            secondValue += num;
+        } else if (secondValue == "")
+            secondValue = num;
+    }
+}
+
+function operation(op) {
+    previousText.textContent = outputText.textContent + " " + op;
+    outputText.textContent = 0;
+}
+
 
 btnAC.addEventListener('click', function() {
     outputText.textContent = "0";
+    previousText.textContent = "";
+    firstValue = "";
+    secondValue = "";
 });
 
 btn0.addEventListener('click', function() {
-    if (outputText.textContent == "0") {
-        outputText.textContent = "0";
-    } else if (outputText !== "") {
-        outputText.textContent += "0";
-    } else {
-        outputText.textContent = "0";
-    }
+    buttonClick("0");
 });
 
 btn1.addEventListener('click', function() {
-    if (outputText.textContent == "0") {
-        outputText.textContent = "1";
-    } else if (outputText !== "") {
-        outputText.textContent += "1";
-    } else {
-        outputText.textContent = "1";
-    }
+    buttonClick("1");
 });
 
 btn2.addEventListener('click', function() {
-    if (outputText.textContent == "0") {
-        outputText.textContent = "2";
-    } else if (outputText !== "") {
-        outputText.textContent += "2";
-    } else {
-        outputText.textContent = "2";
-    }
+    buttonClick("2");
 });
 
 btn3.addEventListener('click', function() {
-    if (outputText.textContent == "0") {
-        outputText.textContent = "3";
-    } else if (outputText !== "") {
-        outputText.textContent += "3";
-    } else {
-        outputText.textContent = "3";
-    }
+    buttonClick("3");
 });
 
 btn4.addEventListener('click', function() {
-    if (outputText.textContent == "0") {
-        outputText.textContent = "4";
-    } else if (outputText !== "") {
-        outputText.textContent += "4";
-    } else {
-        outputText.textContent = "4";
-    }
+    buttonClick("4");
 });
 
 btn5.addEventListener('click', function() {
-    if (outputText.textContent == "0") {
-        outputText.textContent = "5";
-    } else if (outputText !== "") {
-        outputText.textContent += "5";
-    } else {
-        outputText.textContent = "5";
-    }
+    buttonClick("5");
 });
 
 btn6.addEventListener('click', function() {
-    if (outputText.textContent == "0") {
-        outputText.textContent = "6";
-    } else if (outputText !== "") {
-        outputText.textContent += "6";
-    } else {
-        outputText.textContent = "6";
-    }
+    buttonClick("6");
 });
 
 btn7.addEventListener('click', function() {
-    if (outputText.textContent == "0") {
-        outputText.textContent = "7";
-    } else if (outputText !== "") {
-        outputText.textContent += "7";
-    } else {
-        outputText.textContent = "7";
-    }
+    buttonClick("7");
 });
 
 btn8.addEventListener('click', function() {
-    if (outputText.textContent == "0") {
-        outputText.textContent = "8";
-    } else if (outputText !== "") {
-        outputText.textContent += "8";
-    } else {
-        outputText.textContent = "8";
-    }
+    buttonClick("8");
 });
 
 btn9.addEventListener('click', function() {
-    if (outputText.textContent == "0") {
-        outputText.textContent = "9";
-    } else if (outputText !== "") {
-        outputText.textContent += "9";
-    } else {
-        outputText.textContent = "9";
-    }
+    buttonClick("9");
 });
 
-/*
 btnPlus.addEventListener('click', function() {
-    if (outputText.textContent !== "") {
-        parseInt(outputText.textContent) + 
-    }
+    operation("+");
 });
-*/
+
+btnMinus.addEventListener('click', function() {
+    operation("-");
+});
+
+btnMult.addEventListener('click', function() {
+    operation("*");
+});
+
+btnDivide.addEventListener('click', function() {
+    operation("/");
+});
+
+btnEquals.addEventListener('click', function() {
+    previousText.textContent += " ="
+    outputText.textContent = `${compute()}`;
+    previousText.textContent += " " + compute();
+    firstValue = compute();
+    secondValue = "";
+});
