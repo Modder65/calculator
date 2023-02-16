@@ -17,14 +17,13 @@ const btnMinus = document.getElementById('btnMinus');
 const btnMult = document.getElementById('btnMult');
 const btnDivide = document.getElementById('btnDivide');
 const btnEquals = document.getElementById('btnEquals');
+const btnNegative = document.getElementById('btnNegative');
 const outputBar = document.querySelector('.outputBar');
 const outputText = document.getElementById('outputText');
 const previousBar = document.querySelector('.previousBar');
 const previousText = document.getElementById('previousText');5
-let firstValue = "";
-let secondValue = "";
-
-//be able to evaluate expressions with more than 2 operands
+let firstValue = '';
+let secondValue = '';
 
 function compute() {
     let finalValue;
@@ -46,16 +45,16 @@ function compute() {
 function buttonClick(num) {
     if (outputText.textContent == "0") {
         outputText.textContent = num;
-        if (firstValue !== "") {
+        if (firstValue !== '') {
             firstValue = firstValue
-        } else if (firstValue == "") {
+        } else if (firstValue == '') {
             firstValue = num;
         }
-    } else if (outputText !== "") {
+    } else if (outputText.textContent !== "") {
         outputText.textContent += num;
-        if (secondValue !== "") {
+        if (secondValue !== '') {
             firstValue = firstValue
-        } else if (secondValue == "") {
+        } else if (secondValue == '') {
             firstValue += num;
         }
     } else {
@@ -66,42 +65,63 @@ function buttonClick(num) {
     }
     if (previousText.textContent.includes("+")) {
         firstValue = firstValue;
-        if (secondValue !== "") {
+        if (secondValue !== '') {
             secondValue += num;
-        } else if (secondValue == "")
+        } else if (secondValue == '')
             secondValue = num;
     } else if (previousText.textContent.includes("-")) {
         firstValue = firstValue;
-        if (secondValue !== "") {
+        if (secondValue !== '') {
             secondValue += num;
-        } else if (secondValue == "")
+        } else if (secondValue == '')
             secondValue = num;
     } else if (previousText.textContent.includes("*")) {
         firstValue = firstValue;
-        if (secondValue !== "") {
+        if (secondValue !== '') {
             secondValue += num;
-        } else if (secondValue == "")
+        } else if (secondValue == '')
             secondValue = num;
     } else if (previousText.textContent.includes("/")) {
         firstValue = firstValue;
-        if (secondValue !== "") {
+        if (secondValue !== '') {
             secondValue += num;
-        } else if (secondValue == "")
+        } else if (secondValue == '')
             secondValue = num;
     }
 }
 
 function operation(op) {
-    previousText.textContent = outputText.textContent + " " + op;
-    outputText.textContent = 0;
+    if (previousText.textContent !== '') {
+        previousText.textContent += " " + op;
+        outputText.textContent = 0;
+    } else {
+        previousText.textContent = outputText.textContent + " " + op;
+        outputText.textContent = 0;
+    }
+    
 }
 
+function toNegative() {
+    negStr = "-" + outputText.textContent;
+    outputText.textContent = negStr;
+    if (firstValue !== -Math.abs(firstValue) && secondValue == '') {
+        firstValue = parseInt(-firstValue);
+    } else if (firstValue == -Math.abs(firstValue)) {
+        firstValue = firstValue;
+    } 
+    if (secondValue !== -Math.abs(secondValue)) {
+        secondValue = parseInt(-secondValue);
+    } else if (secondValue == -Math.abs(secondValue)) {
+        secondValue = secondValue;
+    }
+    return firstValue, secondValue;
+}
 
 btnAC.addEventListener('click', function() {
     outputText.textContent = "0";
     previousText.textContent = "";
-    firstValue = "";
-    secondValue = "";
+    firstValue = '';
+    secondValue = '';
 });
 
 btn0.addEventListener('click', function() {
@@ -160,10 +180,19 @@ btnDivide.addEventListener('click', function() {
     operation("/");
 });
 
+btnNegative.addEventListener('click', function() {
+    toNegative();
+});
+
 btnEquals.addEventListener('click', function() {
-    previousText.textContent += " ="
-    outputText.textContent = `${compute()}`;
-    previousText.textContent += " " + compute();
-    firstValue = compute();
-    secondValue = "";
+    if (outputText.textContent == "0" && previousText.textContent.includes("0") == false) {
+        return false;
+    } else {
+        previousText.textContent += " ="
+        outputText.textContent = `${compute()}`;
+        previousText.textContent += " " + compute();
+        firstValue = compute();
+        secondValue = '';
+        previousText.textContent = `${firstValue}`
+    }
 });
