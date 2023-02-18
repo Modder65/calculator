@@ -1,7 +1,6 @@
-//create a function for each math operation and assign it to the appropriate button
-//perform the correct math operation when a button is clicked
-//Display the mathematical expression in the output bar of the calculator on screen
 const btnAC = document.getElementById('btnAC');
+const btnPercent = document.getElementById('btnPercent');
+const btnDot = document.getElementById('btnDot');
 const btn0 = document.getElementById('btn0');
 const btn1 = document.getElementById('btn1');
 const btn2 = document.getElementById('btn2');
@@ -24,23 +23,49 @@ const previousBar = document.querySelector('.previousBar');
 const previousText = document.getElementById('previousText');5
 let firstValue = '';
 let secondValue = '';
+let finalValue;
+const char = ["+", "-", "*", "/"];
 
-function compute() {
-    let finalValue;
-    if (previousText.textContent.includes("+")) {
-        finalValue = parseInt(firstValue) + parseInt(secondValue);
-        return finalValue;
-    } else if (previousText.textContent.includes("-")) {
-        finalValue = parseInt(firstValue) - parseInt(secondValue);
-        return finalValue;
-    } else if (previousText.textContent.includes("*")) {
-        finalValue = parseInt(firstValue) * parseInt(secondValue);
-        return finalValue;
-    } else if (previousText.textContent.includes("/")) {
-        finalValue = parseInt(firstValue) / parseInt(secondValue);
-        return finalValue;
+function multCompute() {
+    if (previousText.textContent.includes("*")) {
+        finalValue = parseFloat(firstValue) * parseFloat(secondValue);
+        if (firstValue.toString().includes(".") || secondValue.toString().includes(".")) {
+            return parseFloat(finalValue).toFixed(2);
+        } else {
+            return finalValue;
+        }
     }
 }
+
+function divCompute() {
+    if (previousText.textContent.includes("/")) {
+        finalValue = parseFloat(firstValue) / parseFloat(secondValue);
+        if (firstValue.toString().includes(".") || secondValue.toString().includes(".") || firstValue % secondValue !== 0) {
+            return parseFloat(finalValue).toFixed(2);
+        } else {
+            return parseFloat(finalValue);
+        }
+    }
+}
+
+function compute() {
+    if (previousText.textContent.includes("+")) {
+        finalValue = parseFloat(firstValue) + parseFloat(secondValue);
+        if (firstValue.toString().includes(".") || secondValue.toString().includes(".")) {
+            return parseFloat(finalValue).toFixed(2);
+        } else {
+            return parseFloat(finalValue);
+        }
+    } else if (previousText.textContent.includes("-")) {
+        finalValue = parseFloat(firstValue) - parseFloat(secondValue);
+        if (firstValue.toString().includes(".") || secondValue.toString().includes(".")) {
+            return parseFloat(finalValue).toFixed(2);
+        } else {
+            return parseFloat(finalValue);
+        }
+    } 
+}
+
 
 function buttonClick(num) {
     if (outputText.textContent == "0") {
@@ -98,30 +123,93 @@ function operation(op) {
         previousText.textContent = outputText.textContent + " " + op;
         outputText.textContent = 0;
     }
-    
 }
 
 function toNegative() {
-    negStr = "-" + outputText.textContent;
-    outputText.textContent = negStr;
-    if (firstValue !== -Math.abs(firstValue) && secondValue == '') {
-        firstValue = parseInt(-firstValue);
-    } else if (firstValue == -Math.abs(firstValue)) {
-        firstValue = firstValue;
-    } 
-    if (secondValue !== -Math.abs(secondValue)) {
-        secondValue = parseInt(-secondValue);
-    } else if (secondValue == -Math.abs(secondValue)) {
-        secondValue = secondValue;
+    if (outputText.textContent == "0") {
+        return false;
+    } else {
+        negStr = "-" + outputText.textContent;
+        outputText.textContent = negStr;
     }
-    return firstValue, secondValue;
+    let neg1 = -Math.abs(firstValue);
+    let neg2 = -Math.abs(secondValue);
+    if (firstValue !== -Math.abs(firstValue) && previousText.textContent.includes("+") == false && previousText.textContent.includes("-") == false && previousText.textContent.includes("*") == false && previousText.textContent.includes("/") == false) {
+        firstValue = neg1;
+    } else if (previousText.textContent.includes("+") || previousText.textContent.includes("-") || previousText.textContent.includes("*") || previousText.textContent.includes("/")) {
+        firstValue = firstValue;
+        secondValue = neg2;
+    }
+
+    if (secondValue == -Math.abs(secondValue) && previousText.textContent.includes("+") || previousText.textContent.includes("-") || previousText.textContent.includes("*") || previousText.textContent.includes("/")) {
+        newArray = previousText.textContent.split(" ");
+        newArray[2] = `${secondValue}`;
+        previousText.textContent = newArray.join(" ");
+    } 
 }
+
+function toDecimal() {
+    let decimal;
+    if (firstValue !== decimal && previousText.textContent.includes("+") == false && previousText.textContent.includes("-") == false && previousText.textContent.includes("*") == false && previousText.textContent.includes("/") == false) {
+        firstValue += "%";
+        decimal = parseFloat(firstValue) / 100;
+        firstValue = decimal;
+        outputText.textContent = decimal;
+    } else if (secondValue && previousText.textContent.includes("+") || previousText.textContent.includes("-") || previousText.textContent.includes("*") || previousText.textContent.includes("/")) {
+        firstValue = firstValue;
+        secondValue += "%";
+        decimal = parseFloat(secondValue) / 100;
+        secondValue = decimal;
+        outputText.textContent = decimal;
+    }
+
+    if (secondValue && previousText.textContent.includes("+") || previousText.textContent.includes("-") || previousText.textContent.includes("*") || previousText.textContent.includes("/")) {
+        newArray = previousText.textContent.split(" ");
+        newArray[2] = `${secondValue}`;
+        newArray.pop();
+        previousText.textContent = newArray.join(" ");
+    } 
+}
+
+ 
+
 
 btnAC.addEventListener('click', function() {
     outputText.textContent = "0";
     previousText.textContent = "";
     firstValue = '';
     secondValue = '';
+    finalValue;
+});
+
+btnPercent.addEventListener('click', function() {
+    if (outputText.textContent == "0") {
+        return false;
+    } else if (outputText.textContent !== "0") {
+        toDecimal();
+    }
+});
+
+btnDot.addEventListener('click', function() {
+    if (outputText.textContent.includes(".") == false) {
+        outputText.textContent += ".";
+    } else if (outputText.textContent.includes(".")) {
+        return false;
+    }
+    
+    if (previousText.textContent.includes("+") == false && previousText.textContent.includes("-") == false && previousText.textContent.includes("*") == false && previousText.textContent.includes("/") == false) {
+        firstValue += ".";
+    } 
+
+    for (let i = 0; i < char.length; i++) {
+        if (previousText.textContent.includes(char[i]) && secondValue) {
+            newArray = previousText.textContent.split(" ");
+            newArray[2] = `${secondValue}.`;
+            previousText.textContent = newArray.join(" ");
+            secondValue += ".";
+            break;
+        } 
+    }
 });
 
 btn0.addEventListener('click', function() {
@@ -165,19 +253,35 @@ btn9.addEventListener('click', function() {
 });
 
 btnPlus.addEventListener('click', function() {
-    operation("+");
+    if (outputText.textContent == "0") {
+        return false;
+    } else {
+        operation("+");
+    }
 });
 
 btnMinus.addEventListener('click', function() {
-    operation("-");
+    if (outputText.textContent == "0") {
+        return false;
+    } else {
+        operation("-");
+    }
 });
 
 btnMult.addEventListener('click', function() {
-    operation("*");
+    if (outputText.textContent == "0") {
+        return false;
+    } else {
+        operation("*");
+    }
 });
 
 btnDivide.addEventListener('click', function() {
-    operation("/");
+    if (outputText.textContent == "0") {
+        return false;
+    } else {
+        operation("/");
+    }
 });
 
 btnNegative.addEventListener('click', function() {
@@ -185,8 +289,24 @@ btnNegative.addEventListener('click', function() {
 });
 
 btnEquals.addEventListener('click', function() {
-    if (outputText.textContent == "0" && previousText.textContent.includes("0") == false) {
+    if (outputText.textContent == "0" && previousText.textContent.includes("0") == false || outputText.textContent == previousText.textContent) {
         return false;
+    } else if (secondValue == "0" && previousText.textContent.includes("/")) {
+        outputText.textContent = "can't div by zero"
+    } else if (previousText.textContent.includes("*")) {
+        previousText.textContent += " ="
+        outputText.textContent = `${multCompute()}`;
+        previousText.textContent += " " + multCompute();
+        firstValue = multCompute();
+        secondValue = '';
+        previousText.textContent = `${firstValue}`
+    } else if (previousText.textContent.includes("/")) {
+        previousText.textContent += " ="
+        outputText.textContent = `${divCompute()}`;
+        previousText.textContent += " " + divCompute();
+        firstValue = divCompute();
+        secondValue = '';
+        previousText.textContent = `${firstValue}`
     } else {
         previousText.textContent += " ="
         outputText.textContent = `${compute()}`;
@@ -196,3 +316,6 @@ btnEquals.addEventListener('click', function() {
         previousText.textContent = `${firstValue}`
     }
 });
+
+
+
